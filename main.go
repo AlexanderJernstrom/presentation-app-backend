@@ -29,6 +29,7 @@ func main() {
 	http.Handle("/presentation", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(presentationRoutes.GetPresentation))))
 	http.Handle("/updatePresentation", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(presentationRoutes.UpdatePresentation))))
 	http.Handle("/deletePresentation", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(presentationRoutes.DeletePresentation))))
+	http.Handle("/changeName", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(presentationRoutes.ChangeName))))
 
 	http.Handle("/createSlide", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(slideRoutes.CreateSlide))))
 

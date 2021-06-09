@@ -17,7 +17,9 @@ type CreatePresentationBody struct {
 	Name string `json:"name"`
 }
 
-
+type ChangeNameBody struct {
+	Name string `json:"name"`
+}
 
 func GetAllPresentations(w http.ResponseWriter, r *http.Request){
 	
@@ -68,7 +70,32 @@ func GetPresentation(w http.ResponseWriter, r *http.Request){
 	w.Write(jsonResponse)
 }
 
+func ChangeName(w http.ResponseWriter, r *http.Request){
+	presentationID, err := strconv.Atoi(r.URL.Query().Get("id"))
+	requestBody := new(ChangeNameBody)
 
+
+	if err != nil{
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("server error"))
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&requestBody); err != nil{
+		log.Fatal(err)
+	}
+
+	db.Db.Model(&models.Presentation{}).Where("id = ?", presentationID).Updates(models.Presentation{Name: requestBody.Name})
+
+	jsonResponse, err := json.Marshal(requestBody)
+
+	if err != nil{
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("server error"))
+	}
+
+	w.Write(jsonResponse)
+}
 
 
 func CreatePresentation(w http.ResponseWriter, r *http.Request){
