@@ -49,10 +49,10 @@ func LoadEnv() (envs config){
 
 func Connect() {
 	
-	isProduction := flag.Bool("production", true, "decides if the project is in development or in production")
+	IsProduction = flag.Bool("production", true, "decides if the project is in development or in production")
 
 	var connectionString string 
-	if *isProduction == true {
+	if *IsProduction == true {
 		connectionString = 	os.Getenv("DATABASE_URL")
 	} else {
 		envs := LoadEnv()
