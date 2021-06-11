@@ -1,7 +1,10 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"net/http"
+	"os"
 	"server/db"
 	"server/middlewares"
 	elementRoutes "server/routes/element"
@@ -18,9 +21,17 @@ func main() {
 
 	db.Connect()
 
-
-
 	
+	var port string
+
+	isProduction := flag.Bool("production", true, "decides if the project is in development or in production")
+
+	if *isProduction == true {
+		port = fmt.Sprintf(":%v", os.Getenv("PORT"))
+	} else {
+		port = ":5000"
+	}
+
 	http.HandleFunc("/register", (http.HandlerFunc(register.Register)))
 	http.HandleFunc("/login",(http.HandlerFunc(login.Login)))
 
@@ -37,7 +48,7 @@ func main() {
 	http.Handle("/updateElement", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(elementRoutes.UpdateElement))))
 	http.Handle("/deleteElement", middlewares.SetCors(middlewares.CheckAuth(http.HandlerFunc(elementRoutes.DeleteElement))))
 
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(port, nil)
 
 
 	

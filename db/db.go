@@ -2,7 +2,6 @@ package db
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -48,13 +47,11 @@ func LoadEnv() (envs config){
 
 
 func Connect() {
-	fmt.Println(os.Getenv("APP_ENV"))
 	
 	environment := flag.Bool("production", true, "decides if the project is in development or in production")
 
 	var connectionString string 
 	if *environment == true {
-		fmt.Println("got here")
 		connectionString = 	os.Getenv("DATABASE_URL")
 	} else {
 		envs := LoadEnv()
