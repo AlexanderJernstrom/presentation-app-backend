@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -24,9 +23,9 @@ func main() {
 	
 	var port string
 
-	isProduction := flag.Bool("production", true, "decides if the project is in development or in production")
+	
 
-	if *isProduction == true {
+	if *db.IsProduction == true {
 		port = fmt.Sprintf(":%v", os.Getenv("PORT"))
 	} else {
 		port = ":5000"

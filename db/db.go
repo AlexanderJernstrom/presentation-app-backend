@@ -14,6 +14,7 @@ import (
 
 var Db *gorm.DB
 var err error
+var IsProduction *bool
 
 type config struct{
 	Secret string `mapstructure:"SECRET"`
@@ -48,10 +49,10 @@ func LoadEnv() (envs config){
 
 func Connect() {
 	
-	environment := flag.Bool("production", true, "decides if the project is in development or in production")
+	isProduction := flag.Bool("production", true, "decides if the project is in development or in production")
 
 	var connectionString string 
-	if *environment == true {
+	if *isProduction == true {
 		connectionString = 	os.Getenv("DATABASE_URL")
 	} else {
 		envs := LoadEnv()
