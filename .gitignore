@@ -1,3 +1,4 @@
 app.env
 dbschema.png
 Dockerfile
+.env

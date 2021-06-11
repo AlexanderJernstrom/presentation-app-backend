@@ -21,6 +21,7 @@ type config struct{
 	DbUser string `mapstructure:"DB_USER"`
 	DbPassword string `mapstructure:"DB_PASSWORD"`
 	DbName string `mapstructure:"DB_NAME"`
+	DbURL string `mapstructure:"DB_URL"`
 }
 
 func LoadEnv() (envs config){
@@ -49,7 +50,15 @@ func Connect() {
 	fmt.Println(os.Getenv("SECRET"))
 	envs := LoadEnv()
 
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable", envs.DbHost, envs.DbUser, envs.DbPassword, envs.DbName)
+	var connectionString string 
+	if os.Getenv("APP_ENV") == "production" {
+		connectionString = 	os.Getenv("DATABASE_URL")
+	} else if os.Getenv("APP_ENV") == "development" {
+		connectionString = envs.DbURL
+	}
+
+	
+	//fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable", envs.DbHost, envs.DbUser, envs.DbPassword, envs.DbName)
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
