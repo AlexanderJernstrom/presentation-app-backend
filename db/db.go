@@ -47,12 +47,13 @@ func LoadEnv() (envs config){
 
 
 func Connect() {
-	fmt.Println(os.Getenv("SECRET"))
+	fmt.Println(os.Getenv("APP_ENV"))
 	
 	var connectionString string 
 	if os.Getenv("APP_ENV") == "production" {
+		fmt.Println("got here")
 		connectionString = 	os.Getenv("DATABASE_URL")
-		} else if os.Getenv("APP_ENV") == "development" {
+	} else {
 		envs := LoadEnv()
 		connectionString = envs.DbURL
 	}
